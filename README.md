@@ -8,7 +8,7 @@ and **AVCocktail** conversational datasets.
 - **Video-VAP** (`StereoTransformerModelVideoOnly`) -- video-only.
 - **MM-VAP** (`EarlyVAFusion`) -- early audio-visual fusion.
 
-This is a distilled, public release of the training/eval code used for the
+This is a public release of the training/eval code used for the
 paper: PyTorch Lightning + Hydra training, and standalone evaluation scripts
 for shift/hold prediction. All released recipes use the CPC audio encoder
 (weights downloaded automatically on first use, see
