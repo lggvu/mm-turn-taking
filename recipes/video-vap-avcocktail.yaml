@@ -1,0 +1,149 @@
+# Video-VAP -- trained on AVCocktail
+#
+# StereoTransformerModelVideoOnly (video-only), CPC encoder config carried for consistency, AVCocktail only. Base config: train_config.yaml.
+#
+# Usage:
+#   python scripts/train.py --config-path=../recipes --config-name=video-vap-avcocktail
+#
+# Before running, fill in real dataset paths under data.train / data.val
+# (they ship as /path/to/... placeholders), either by editing this file or
+# via CLI overrides, e.g.:
+#   python scripts/train.py --config-path=../recipes --config-name=video-vap-avcocktail \
+#       data.train.wavdir=/data/avcocktail/train data.val.wavdir=/data/avcocktail/dev
+
+# Evaluate the resulting checkpoint with:
+#   cd eval && python evaluate_dataset.py model.model_name=video \
+#       model.config_path=<run_dir>/logs/StereoTransformerModelVideoOnly_all/version_0/hparams.yaml \
+#       "model.weights_path='<run_dir>/checkpoints/<epoch=XX-val/loss=X.XXXX>.ckpt'" \
+#       data.video_dir=/path/to/avcocktail/dev
+
+# @package _global_
+defaults:
+  - hydra/job_logging: stdout
+
+hydra:
+  run:
+    dir: .
+  output_subdir: null
+trainer:
+  max_epochs: 10
+  accelerator: gpu
+  devices: 1
+  precision: 32
+  gradient_clip_val: 5.0
+  log_every_n_steps: 10
+  check_val_every_n_epoch: 1
+optimizer:
+  name: AdamW
+  lr: 0.0005
+  betas:
+  - 0.9
+  - 0.999
+  weight_decay: 0.001
+  encoder_adapter:
+    enabled: false
+    weight_decay: 0.0
+    lr: null
+scheduler:
+  enabled: false
+  name: ReduceLROnPlateau
+  mode: min
+  factor: 0.5
+  patience: 2
+training:
+  batch_size: 4
+  num_workers: 8
+  prefetch_factor: 4
+  pin_memory: false
+  seed: 0
+  mode: ${model.base.mode}
+validation:
+  batch_size: 1
+  num_workers: 8
+  prefetch_factor: 1
+augmentation:
+  flip_channel_prob: 0.0
+  mask_vad_prob: 0.0
+  mask_vad_scale: 0.1
+paths:
+  save_dir: ${hydra:runtime.cwd}/save
+  log_dir: logs
+  checkpoint_dir: checkpoints
+  pretrained_checkpoint: null
+  prefix_save: ${model.model_name}-${data.name}-${training.mode}
+  prefix_suffix: ''
+debug: false
+model:
+  model_name: StereoTransformerModelVideoOnly
+  device: cuda:0
+  encoder:
+    audio_sample_rate: 16000
+    feature_sample_rate: 50
+  base:
+    d_ffn: 768
+    d_model: 60
+    d_out: 256
+    dff_k: 3
+    dropout_prob: 0.1
+    ffn_activation: GELU
+    mode: VAP
+    n_heads: 4
+    n_layers_self: 1
+    n_layers_cross: 3
+  multimodal:
+    audio:
+      d_model: 256
+      d_ffn: 768
+      n_heads: 4
+      n_layers_self: 1
+      sequence_len: 1000
+      audio_sample_rate: 16000
+      feature_sample_rate: 50
+    video:
+      d_model: 60
+      d_ffn: 174
+      n_heads: 4
+      n_layers_self: 1
+      sequence_len: 600
+    fuse_av:
+      d_model: 256
+      n_heads: 4
+      n_layers_cross: 3
+    fuse_speakers:
+      d_model: 256
+      n_heads: 4
+      n_layers_cross: 3
+    dff_k: 3
+    dropout_prob: 0.1
+    ffn_activation: GELU
+  feature_set: all
+data:
+  name: avcocktail
+  datamodule_class: AVCocktailDataModule
+  train:
+    video_directory: /path/to/avcocktail/train
+    channelmaps: /path/to/avcocktail/assets/central-train_channelmaps.pkl
+    wavdir: /path/to/avcocktail/train
+    pickle_base: /path/to/avcocktail/assets
+    train_list: null
+  val:
+    video_directory: /path/to/avcocktail/dev
+    channelmaps: /path/to/avcocktail/assets/central-dev_channelmaps_filtered.pkl
+    wavdir: /path/to/avcocktail/dev
+    pickle_base: /path/to/avcocktail/assets
+    val_list: null
+  feature_hz: 50
+  window_length: 20
+  future_context: 2
+  fps: 30
+  n_folds: 1
+  current_fold: 0
+  sampling_rate: 16000
+encoder:
+  name: cpc
+  class: StereoEncoder
+  sample_rate: 16000
+  feature_rate: 50
+  load_pretrained: true
+  freeze: true
+  device: cuda

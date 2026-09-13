@@ -1,0 +1,63 @@
+# @package _group_
+# EarlyVAFusion model configuration
+
+model_name: EarlyVAFusion
+
+# Device configuration
+device: cuda:0
+
+# Audio encoder configuration
+encoder:
+  audio_sample_rate: 16000
+  feature_sample_rate: 50
+
+# Base model configuration
+base:
+  d_model: 256
+  d_out: 256
+  dff_k: 3
+  dropout_prob: 0.1
+  ffn_activation: GELU
+  mode: VAP  # VAP, ind-4, ind-40
+  n_heads: 4
+  n_layers_self: 1
+  n_layers_cross: 3
+
+# Multimodal configuration
+multimodal:
+  # Audio pathway
+  audio:
+    d_model: 256
+    d_ffn: 768
+    n_heads: 4
+    n_layers_self: 1
+    sequence_len: 1000
+    audio_sample_rate: 16000
+    feature_sample_rate: 50
+  
+  # Video pathway
+  video:
+    d_model: 60  # depends on feature_set (all=60, pose=6, gaze=6, lmks=30, faus=18)
+    d_ffn: 180  # d_model * 3
+    n_heads: 4
+    n_layers_self: 1
+    sequence_len: 600  # 30 fps * 20 seconds
+  
+  # Audio-Video fusion
+  fuse_av:
+    d_model: 256
+    n_heads: 4
+    n_layers_cross: 3
+  
+  # Speaker fusion
+  fuse_speakers:
+    d_model: 256
+    n_heads: 4
+    n_layers_cross: 3
+  
+  dff_k: 3
+  dropout_prob: 0.1
+  ffn_activation: GELU
+
+# Feature set configuration
+feature_set: all  # all, pose, gaze, lmks, faus, faus+lmks

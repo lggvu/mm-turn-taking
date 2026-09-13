@@ -1,0 +1,12 @@
+# @package _group_
+# CPC encoder configuration
+
+name: cpc
+class: StereoEncoder
+sample_rate: 16000
+feature_rate: 50
+
+# CPC-specific parameters
+load_pretrained: true
+freeze: true
+device: cuda

@@ -1,0 +1,57 @@
+# Configuration for shift/hold evaluation on CANDOR
+#
+# Every path below is a placeholder -- override on the command line or edit
+# this file, e.g.:
+#   python evaluate_candor_folds.py model.config_path=... model.weights_path=... \
+#       data.base_dir=/data/candor data.fold_dir=/data/candor/folds
+prefix_save: ""
+# Model configuration
+model:
+  config_path: "/path/to/run/checkpoints/hparams.yaml"
+  weights_path: "/path/to/run/checkpoints/weights.ckpt"
+  model_name: "early_fusion_candor"
+  device: "cuda:0"
+  # valid_model_names = [
+  #       "early_fusion_candor",
+  #       "vap_candor",
+  #       "vap_switchboard_asr",
+  #       "vap_switchboard_ground_truth",
+  #       "video_candor",
+  #   ]
+
+# Data paths
+data:
+  name: "candor"  # Dataset name used for organizing results
+  base_dir: "/path/to/candor"  # Base directory for CANDOR dataset
+  events_dir: "/path/to/candor/candor_turns_with_timings"  # Directory containing event JSON files
+  video_dir: "/path/to/candor/candor_openface_pkl"  # Video features directory
+  channelmap: "/path/to/candor/channelmaps.pkl"  # Channelmap file
+  fold_dir: "/path/to/candor/folds"  # Directory containing fold_{0..4}/val.csv session-fold splits
+
+# Inference parameters
+inference:
+  window_size: 10
+  step_size: 9
+  mode: "VAP"
+  feature_sr: 50
+
+# Evaluation parameters
+evaluation:
+  fold: 0  # Fold to evaluate: 0, 1, 2, 3, 4, or "all" for all folds
+  window: 0.2  # Evaluation window size in seconds
+  threshold: 5.0  # Score threshold for predicting shift # 0.5 * (0.2 * 50) -> window = 0.2s, feature_sr = 50Hz, each second has 50 predictions
+  event_type: "ekstedt_events"  # Which events to use: "ekstedt_events" or "roddy_events"
+  eval_start: 0  # Start time in seconds for evaluation region (0 = from beginning)
+  eval_end: -1  # End time in seconds for evaluation region (-1 = until end)
+  results_dir: null  # null = default to <repo>/eval/results
+
+# Visualization parameters
+visualization:
+  enabled: false
+  output_dir: "outputs/candor_visualization"
+  start_time: 10
+  stop_time: 30
+  output_name: "shift_hold_detailed.png"
+
+# Debug options
+debug: false

@@ -1,0 +1,27 @@
+# Versions below match the environment this repo was actually tested against
+# (torch 2.4.1, hydra-core 1.0.7). Newer torch/pytorch-lightning should work;
+# Hydra config-group composition (`defaults:` + `_self_`) is only verified
+# against 1.0.x -- if you use a newer Hydra 1.1+/1.3+, double check the
+# composed config with `python scripts/train.py --cfg job` before training.
+torch>=2.0.0
+torchaudio>=2.0.0
+torchvision>=0.15.0
+pytorch-lightning>=2.0.0
+hydra-core>=1.0.7
+omegaconf>=2.0.6
+einops>=0.6.0
+pandas>=1.5.0
+numpy>=1.23.0
+tqdm>=4.64.0
+tensorboard>=2.11.0
+matplotlib>=3.6.0
+seaborn>=0.12.0
+scikit-learn>=1.1.0
+tensordict>=0.1.0
+opencv-python>=4.5.0
+retina-face>=0.0.13
+textgrid>=1.5
+librosa>=0.10.0
+scipy>=1.5.0
+PyYAML>=6.0
+python_speech_features>=0.6

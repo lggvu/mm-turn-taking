@@ -1,0 +1,40 @@
+# @package _group_
+# CANDOR dataset configuration
+#
+# Every path below is a placeholder -- set it to where you unpacked the
+# CANDOR corpus and its precomputed fold splits, either by editing this file
+# or overriding on the command line, e.g.:
+#   python scripts/train.py data=candor data.train.wavdir=/data/candor/wav ...
+
+# Dataset name (used for organizing outputs)
+name: candor
+datamodule_class: CandorDataModule  # Lightning DataModule class to use
+
+# Dataset paths
+train:
+  video_directory: /path/to/candor/candor_openface_pkl # pkl dir
+  channelmaps: /path/to/candor/channelmaps.pkl
+  wavdir: /path/to/candor/candor_wav
+  pickle_base: /path/to/candor/folds # contains fold_*
+  train_list: /path/to/candor/folds/fold_0/train.csv
+
+val:
+  video_directory: /path/to/candor/candor_openface_pkl # pkl dir
+  channelmaps: /path/to/candor/channelmaps.pkl
+  wavdir: /path/to/candor/candor_wav
+  pickle_base: /path/to/candor/folds # contains fold_*
+  val_list: /path/to/candor/folds/fold_0/val.csv
+
+# Data configuration
+sample_rate: 16000
+feature_hz: 50
+video_fps: 30
+window_length: 20  # seconds
+future_context: 2  # seconds
+fps: 30
+
+# K-fold configuration
+n_folds: 1
+current_fold: 0
+
+sampling_rate: 16000

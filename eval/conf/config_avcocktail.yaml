@@ -1,0 +1,74 @@
+# Configuration for shift/hold evaluation on AVCocktail (MCoRec)
+#
+# Every path below is a placeholder -- override on the command line or edit
+# this file, e.g.:
+#   python evaluate_dataset.py model.config_path=... model.weights_path=... \
+#       data.video_dir=/data/avcocktail/dev data.channelmap=/data/avcocktail/assets/central-dev_channelmaps_filtered.pkl
+prefix_save: ""
+# Model configuration
+model:
+  config_path: "/path/to/run/checkpoints/hparams.yaml"
+  weights_path: "/path/to/run/checkpoints/epoch=07-val_loss=0.2753.ckpt"
+  model_name: "early_fusion"
+  device: "cuda:0"
+  # valid_model_names = [
+  #       "early_fusion_candor",
+  #       "vap_candor",
+  #       "vap_switchboard_asr",
+  #       "vap_switchboard_ground_truth",
+  #       "video_candor",
+  #   ]
+
+# Data paths
+data:
+  name: "avcocktail"  # Dataset name used for organizing results
+  audio_path: "/path/to/avcocktail/train/session_23/stereo_audios/spk_0-spk_1-30fps.wav"
+  video_dir: "/path/to/avcocktail/dev"
+  transcript_path: null
+  events_path: "/path/to/avcocktail/train/session_23/events-spk_0-spk_1.json"
+  channelmap: "/path/to/avcocktail/assets/central-dev_channelmaps_filtered.pkl"
+  # Sessions (under data.video_dir) to batch-evaluate in evaluate_dataset.py
+  sessions:
+    - session_57
+    - session_56
+    - session_55
+    - session_54
+    - session_53
+    - session_48
+    - session_44
+    - session_43
+    - session_42
+    - session_41
+    - session_40
+    - session_141
+    - session_136
+    - session_134
+    - session_133
+    - session_132
+
+# Inference parameters
+inference:
+  window_size: 10
+  step_size: 9
+  mode: "VAP"
+  feature_sr: 50
+
+# Evaluation parameters
+evaluation:
+  window: 0.2  # Evaluation window size in seconds
+  threshold: 5.0  # Score threshold for predicting shift # 0.5 * (0.2 * 50) -> window = 0.2s, feature_sr = 50Hz, each second has 50 predictions
+  event_type: "roddy_events"  # Which events to use: "ekstedt_events" or "roddy_events"
+  eval_start: 0  # Start time in seconds for evaluation region (0 = from beginning)
+  eval_end: -1  # End time in seconds for evaluation region (-1 = until end)
+
+# Visualization parameters
+visualization:
+  enabled: false
+  output_dir: "outputs/avcocktail_visualization"
+  start_time: 10
+  stop_time: 30
+  output_name: "shift_hold_detailed.png"
+
+# Debug options
+debug: false
+save_embs: false

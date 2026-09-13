@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.eggs/
+*.egg-info/
+build/
+dist/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Training/eval artifacts
+save/
+outputs/
+checkpoints/
+eval/results/
+wandb/
+lightning_logs/
+*.ckpt
+*.pt
+
+# Downloaded pretrained assets (e.g. the CPC checkpoint, auto-downloaded on first use)
+assets/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
