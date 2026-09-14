@@ -52,6 +52,9 @@ The codebase was built initially in Python 3.8, if you use a newer Python and hy
 datasets (or override on the command line, e.g. `data.train.wavdir=...`).
 Neither dataset is redistributed here.
 
+## Turn-taking Labels
+Turn-taking labels are available at: https://huggingface.co/datasets/lggvu/avcocktail-turn-taking.
+
 ## Training
 
 ```bash
