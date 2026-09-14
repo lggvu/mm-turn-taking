@@ -5,6 +5,7 @@
 # Downloads turn-taking event labels, channel-mapping pickles, and OpenFace
 # feature pickles from:
 #   https://huggingface.co/datasets/lggvu/avcocktail-turn-taking
+#   https://huggingface.co/datasets/lggvu/avcocktail-openface-features
 # and merges them into $SRC_AVCOCKTAIL, matching the existing session layout:
 #   dev/<session>/annotated/events-<spkA>-<spkB>.json          (manually annotated)
 #   dev/<session>/speakers/<spk>/annotated-pkl_fps30/<spk>.pkl (OpenFace features)
@@ -29,6 +30,7 @@ echo "STEP 2/4: download event label + OpenFace feature files"
 echo "======================================================================"
 
 EVENT_LABELS_REPO="lggvu/avcocktail-turn-taking"
+OPENFACE_FEATURES_REPO="lggvu/avcocktail-openface-features"
 
 if [ ! -d "$SRC_AVCOCKTAIL/train" ] || [ ! -d "$SRC_AVCOCKTAIL/dev" ]; then
     echo "[2/4] ERROR: $SRC_AVCOCKTAIL/train or /dev doesn't exist yet -- run step 1 first." >&2
@@ -57,8 +59,24 @@ if [ -n "${HF_TOKEN:-}" ] && [ "$HF_TOKEN" != "your_actual_token_here" ]; then
     TOKEN_ARG="$HF_TOKEN"
 fi
 
-echo "[2/4] syncing $EVENT_LABELS_REPO -> $SRC_AVCOCKTAIL (this can take a while the first time, ~1GB)..."
+echo "[2/4] syncing $EVENT_LABELS_REPO -> $SRC_AVCOCKTAIL..."
 conda run --no-capture-output -n "$CHUNKS_CONDA_ENV" python3 - "$EVENT_LABELS_REPO" "$SRC_AVCOCKTAIL" "$TOKEN_ARG" <<'PY'
+import sys
+from huggingface_hub import snapshot_download
+
+repo_id, local_dir, token = sys.argv[1], sys.argv[2], sys.argv[3] or None
+snapshot_download(
+    repo_id=repo_id,
+    repo_type="dataset",
+    local_dir=local_dir,
+    token=token,
+    allow_patterns=["train/*", "dev/*"],
+)
+print("snapshot_download complete")
+PY
+
+echo "[2/4] syncing $OPENFACE_FEATURES_REPO -> $SRC_AVCOCKTAIL (this can take a while the first time, ~1GB)..."
+conda run --no-capture-output -n "$CHUNKS_CONDA_ENV" python3 - "$OPENFACE_FEATURES_REPO" "$SRC_AVCOCKTAIL" "$TOKEN_ARG" <<'PY'
 import sys
 from huggingface_hub import snapshot_download
 

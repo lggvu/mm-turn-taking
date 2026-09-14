@@ -55,6 +55,9 @@ Neither dataset is redistributed here.
 ## Turn-taking Labels
 Turn-taking labels are available at: https://huggingface.co/datasets/lggvu/avcocktail-turn-taking.
 
+## Setup AVCocktail
+Refer to `avcocktail_prep` to download and process the data for training/evaluation.
+
 ## Training
 
 ```bash
