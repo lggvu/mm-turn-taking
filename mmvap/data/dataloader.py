@@ -236,8 +236,8 @@ class AudioVisualDataset(AudioDataset):
         for lr in ("L", "R"):
 
             video_id = ch[lr].item()
-            
-            video_file = os.path.join(self.video_directory, id + '--' + video_id + self.video_format)
+             
+            video_file = os.path.join(self.video_directory, id + '--' + video_id + self.video_format) # candor pattern
             df = _read_pickle_compat(video_file)
             frames = df.iloc[int(start*self.fps):int(end*self.fps), :]
             frames = torch.Tensor(frames.values)
@@ -279,10 +279,7 @@ class AVCocktailDataset(ChunkedDataset):
     def get_audio_chunk(self, id, start, end, sample_rate):
         # locate the audio file 
         session, audioname = id.split("**")
-        if self.dev:
-            wavfile = os.path.join(self.wavdir, session, "stereo_audios", f"{audioname}.wav")
-        else:
-            wavfile = os.path.join(self.wavdir, session, "central-stereo_audios", f"{audioname}.wav")
+        wavfile = os.path.join(self.wavdir, session, "stereo_audios", f"{audioname}.wav")
         # print(f'wavfile: {wavfile}')
         
         # audio segment 
