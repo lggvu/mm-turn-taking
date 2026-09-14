@@ -35,8 +35,15 @@ pip install -r requirements.txt
 pip install -e .
 ```
 
-Requires Python >= 3.9 and a CUDA-capable GPU for training/inference at
+Requires Python >= 3.8 and a CUDA-capable GPU for training/inference at
 realistic speed (CPU works but is slow).
+
+The codebase was built initially in Python 3.8, if you use a newer Python and hydra-core (Python >3.8 and hydracore > 1.0.7), you may need to add `version_base=None` to this line in `scripts/train.py`:
+```
+# Old: @hydra.main(config_path="../configs", config_name="train_config")
+@hydra.main(version_base=None, config_path="../configs", config_name="train_config")
+```
+
 
 ## Dataset setup
 
