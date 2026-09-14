@@ -96,3 +96,6 @@ MIT, see [LICENSE](LICENSE). The CPC encoder weights are downloaded from the
 public [CPC_audio](https://github.com/facebookresearch/CPC_audio) checkpoint
 release; the CANDOR and AVCocktail datasets are governed by their own
 respective licenses/access terms and are not redistributed here.
+
+## Citation
+Accepted to IEEE SLT 2026. Citations TBU.
