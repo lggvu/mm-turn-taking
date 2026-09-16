@@ -94,6 +94,22 @@ window/threshold on the command line as shown in `recipes/`.
 See [recipes/README.md](recipes/README.md) for the full list of reproducible
 training + evaluation recipes, one per released checkpoint.
 
+## Pre-trained checkpoints
+| Model | Trained on | Hugging Face |
+|---|---|---|
+| MMVAP | Candor | [lggvu/mmvap-candor](https://huggingface.co/lggvu/mmvap-candor) |
+| MMVAP | Candor → AVCocktail | [lggvu/mmvap-candor-avcocktail-ft](https://huggingface.co/lggvu/mmvap-candor-avcocktail-ft) |
+| MMVAP | AVCocktail | [lggvu/mmvap-avcocktail](https://huggingface.co/lggvu/mmvap-avcocktail) |
+| AudioVAP | Candor | [lggvu/audiovap-candor](https://huggingface.co/lggvu/audiovap-candor) |
+| AudioVAP | Candor → AVCocktail | [lggvu/audiovap-candor-avcocktail-ft](https://huggingface.co/lggvu/audiovap-candor-avcocktail-ft) |
+| AudioVAP | AVCocktail | [lggvu/audiovap-avcocktail](https://huggingface.co/lggvu/audiovap-avcocktail) |
+| VideoVAP | Candor | [lggvu/videovap-candor](https://huggingface.co/lggvu/videovap-candor) |
+| VideoVAP | Candor → AVCocktail | [lggvu/videovap-candor-avcocktail-ft](https://huggingface.co/lggvu/videovap-candor-avcocktail-ft) |
+| VideoVAP | AVCocktail | [lggvu/videovap-avcocktail](https://huggingface.co/lggvu/videovap-avcocktail) |
+
+
+"A->B" means pre-trained on A, then fine-tuned on B.
+
 ## License
 
 MIT, see [LICENSE](LICENSE). The CPC encoder weights are downloaded from the
