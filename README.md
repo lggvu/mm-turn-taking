@@ -57,10 +57,16 @@ Neither dataset is redistributed here.
 Turn-taking labels are available at: https://huggingface.co/datasets/lggvu/avcocktail-turn-taking.
 
 ## Setup AVCocktail
-Refer to `avcocktail_prep` to download and process the data for training/evaluation.  
+Refer to `avcocktail_prep` to download and process the data for training/evaluation.
 The turn labels are available at: https://huggingface.co/datasets/lggvu/avcocktail-turn-taking  
 The pre-extracted OpenFace features are available at: https://huggingface.co/datasets/lggvu/avcocktail-openface-features  
-You can also extract the features yourself with an OpenFace docker image as in `avcocktail-prep/openface_connector.py`.
+You can also extract the features yourself with an OpenFace docker image as in `avcocktail-prep/openface_connector.py`.  
+At the end you should have the following components for training/evaluation:  
+
+- Stereo audios of two speakers
+- OpenFace features of speakers (for video-based models)  
+- Chunks generated in .pt and .npy files, which are defined by window size and hop size constants in the bash scripts. These are used to speed up the training.  
+- Event files (`.json`) as labels.
 
 ## Training
 
@@ -78,6 +84,7 @@ python scripts/train.py --config-path=../recipes --config-name=audio-vap-avcockt
 dataset + encoder + hyperparameters -- per released checkpoint.
 
 ## Evaluation
+Model make predictions at 50Hz. A shift is predicted if the VAP probability of the *other* speaker is higher than a threshold. Since the probability is cumulated over a 2-second window (thus 2*50=100 predictions), a baseline threshold (0.5) will be 50.0.
 
 ```bash
 cd eval
@@ -87,7 +94,8 @@ python evaluate_candor_folds.py model.config_path=... model.weights_path=...   #
 
 Both scripts are Hydra-based (`eval/conf/config_avcocktail.yaml` /
 `config_candor.yaml`); override dataset paths, model paths, and evaluation
-window/threshold on the command line as shown in `recipes/`.
+window/threshold on the command line as shown in `recipes/`. 
+Note that the config_path should be the `hparams.yaml` file containing only the model's parameters, not the `hparams_lightning.yaml` files which contain more than you need. I've never tried running evaluation with those.
 
 ## Recipes
 
