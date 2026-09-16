@@ -84,7 +84,7 @@ python scripts/train.py --config-path=../recipes --config-name=audio-vap-avcockt
 dataset + encoder + hyperparameters -- per released checkpoint.
 
 ## Evaluation
-Model make predictions at 50Hz. A shift is predicted if the VAP probability of the *other* speaker is higher than a threshold. Since the probability is cumulated over a 2-second window (thus 2*50=100 predictions), a baseline threshold (0.5) will be 50.0.
+Model make predictions at 50Hz. A shift is predicted if the VAP probability of the *other* speaker is higher than a threshold. Since the probability is cumulated over a 200ms-second window, a baseline threshold (0.5) will be 0.5 * (0.2 * 50) = 5.0.
 
 ```bash
 cd eval
