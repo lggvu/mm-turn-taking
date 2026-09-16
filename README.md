@@ -19,6 +19,7 @@ supported in this release.
 
 ```
 mm-turn-taking/
+├── avcocktail_prep/        # AVCocktail prep codes for turn-taking with VAP
 ├── configs/                # Hydra configs (model / data / encoder / trainer)
 ├── mmvap/                  # Package: models, data modules, audio encoder
 ├── scripts/train.py        # PyTorch Lightning + Hydra training entrypoint
