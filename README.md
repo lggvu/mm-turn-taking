@@ -58,7 +58,7 @@ Turn-taking labels are available at: https://huggingface.co/datasets/lggvu/avcoc
 
 ## Setup AVCocktail
 Refer to `avcocktail_prep` to download and process the data for training/evaluation.  
-The turn labels are available at: https://huggingface.co/datasets/lggvu/avcocktail-turn-taking
+The turn labels are available at: https://huggingface.co/datasets/lggvu/avcocktail-turn-taking  
 The pre-extracted OpenFace features are available at: https://huggingface.co/datasets/lggvu/avcocktail-openface-features  
 You can also extract the features yourself with an OpenFace docker image as in `avcocktail-prep/openface_connector.py`.
 
