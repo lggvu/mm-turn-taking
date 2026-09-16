@@ -22,10 +22,10 @@ model:
 # Data paths
 data:
   name: "avcocktail"  # Dataset name used for organizing results
-  audio_path: "/path/to/avcocktail/train/session_23/stereo_audios/spk_0-spk_1-30fps.wav"
+  audio_path: null # single file, doesnt matter since we are evaluating an entire dataset, leave null
   video_dir: "/path/to/avcocktail/dev"
   transcript_path: null
-  events_path: "/path/to/avcocktail/train/session_23/events-spk_0-spk_1.json"
+  events_path: null # a single file, leave null since we are eval-ing the entire dataset
   channelmap: "/path/to/avcocktail/assets/central-dev_channelmaps_filtered.pkl"
   # Sessions (under data.video_dir) to batch-evaluate in evaluate_dataset.py
   sessions:
@@ -57,13 +57,13 @@ inference:
 evaluation:
   window: 0.2  # Evaluation window size in seconds
   threshold: 5.0  # Score threshold for predicting shift # 0.5 * (0.2 * 50) -> window = 0.2s, feature_sr = 50Hz, each second has 50 predictions
-  event_type: "roddy_events"  # Which events to use: "ekstedt_events" or "roddy_events"
+  event_type: "roddy_events"  # for avcocktail, we use "roddy_events" due to historical reasons
   eval_start: 0  # Start time in seconds for evaluation region (0 = from beginning)
   eval_end: -1  # End time in seconds for evaluation region (-1 = until end)
 
 # Visualization parameters
 visualization:
-  enabled: false
+  enabled: false # it generates cool static visualization if it actually works
   output_dir: "outputs/avcocktail_visualization"
   start_time: 10
   stop_time: 30
