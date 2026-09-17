@@ -124,16 +124,30 @@ def get_chunked_dataset(ids, audio_dir):
             vads_in_frame_left = [[v[0] - start, v[1] - start] for v in vads_in_frame_left]
             vads_in_frame_right = [[v[0] - start, v[1] - start] for v in vads_in_frame_right]
 
-            future_vad_left = [v for v in vad_list[0] if v[0] > end and v[0] < end + FUTURE_CONTEXT]
-            future_vad_right = [v for v in vad_list[1] if v[0] > end and v[0] < end + FUTURE_CONTEXT]
+            # future_vad_left = [v for v in vad_list[0] if v[0] > end and v[0] < end + FUTURE_CONTEXT]
+            # future_vad_right = [v for v in vad_list[1] if v[0] > end and v[0] < end + FUTURE_CONTEXT]
 
-            if future_vad_left:
+            # if future_vad_left:
+            #     future_vad_left[-1][1] = min(end + FUTURE_CONTEXT, future_vad_left[-1][1])
+            #     future_vad_left = [[v[0] - start, v[1] - start] for v in future_vad_left]
+
+            # if future_vad_right:
+            #     future_vad_right[-1][1] = min(end + FUTURE_CONTEXT, future_vad_right[-1][1])
+            #     future_vad_right = [[v[0] - start, v[1] - start] for v in future_vad_right]
+
+            future_vad_left = copy.deepcopy([v for v in vad_list_master[0] if v[1] > end and v[0] < end + FUTURE_CONTEXT])
+            future_vad_right = copy.deepcopy([v for v in vad_list_master[1] if v[1] > end and v[0] < end + FUTURE_CONTEXT])
+
+            # now trim the start and the end
+            if future_vad_left != []:
+                future_vad_left[0][0] = max(end, future_vad_left[0][0])
                 future_vad_left[-1][1] = min(end + FUTURE_CONTEXT, future_vad_left[-1][1])
-                future_vad_left = [[v[0] - start, v[1] - start] for v in future_vad_left]
+                future_vad_left = [[v[0] - end, v[1] - end] for v in future_vad_left]
 
-            if future_vad_right:
+            if future_vad_right != []:
+                future_vad_right[0][0] = max(end, future_vad_right[0][0])
                 future_vad_right[-1][1] = min(end + FUTURE_CONTEXT, future_vad_right[-1][1])
-                future_vad_right = [[v[0] - start, v[1] - start] for v in future_vad_right]
+                future_vad_right = [[v[0] - end, v[1] - end] for v in future_vad_right]
 
             vad = [vads_in_frame_left, vads_in_frame_right]
             future_vad = [future_vad_left, future_vad_right]
