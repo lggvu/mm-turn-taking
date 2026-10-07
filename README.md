@@ -1,5 +1,7 @@
 # MM-Turn-Taking
 
+Official implementation for the paper: "Audio-Visual Turn-taking Prediction in Cocktail Party Scenarios", Long-Vu Hoang and Naomi Harte. Accepted to **IEEE SLT 2026.**
+
 Audio-VAP, Video-VAP and MM-VAP: multimodal Voice Activity Projection (VAP)
 models for turn-taking prediction, trained and evaluated on the **CANDOR**
 and **AVCocktail** conversational datasets.
