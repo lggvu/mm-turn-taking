@@ -10,12 +10,6 @@ and **AVCocktail** conversational datasets.
 - **Video-VAP** (`StereoTransformerModelVideoOnly`) -- video-only.
 - **MM-VAP** (`EarlyVAFusion`) -- early audio-visual fusion.
 
-This is a public release of the training/eval code used for the
-paper: PyTorch Lightning + Hydra training, and standalone evaluation scripts
-for shift/hold prediction. All released recipes use the CPC audio encoder
-(weights downloaded automatically on first use, see
-`mmvap/audio_encoders/encoder_cpc_components.py`); no other encoder is
-supported in this release.
 
 ## Structure
 
@@ -41,7 +35,7 @@ pip install -e .
 Requires Python >= 3.8 and a CUDA-capable GPU for training/inference at
 realistic speed (CPU works but is slow).
 
-The codebase was built initially in Python 3.8, if you use a newer Python and hydra-core (Python >3.8 and hydracore > 1.0.7), you may need to add `version_base=None` to this line in `scripts/train.py`:
+Note: The codebase was built initially in Python 3.8, if you use a newer Python and hydra-core (Python >3.8 and hydracore > 1.0.7), you may need to add `version_base=None` to this line in `scripts/train.py`:
 ```
 # Old: @hydra.main(config_path="../configs", config_name="train_config")
 @hydra.main(version_base=None, config_path="../configs", config_name="train_config")
@@ -86,7 +80,7 @@ python scripts/train.py --config-path=../recipes --config-name=audio-vap-avcockt
 dataset + encoder + hyperparameters -- per released checkpoint.
 
 ## Evaluation
-Model make predictions at 50Hz. A shift is predicted if the VAP probability of the *other* speaker is higher than a threshold. Since the probability is cumulated over a 200ms-second window, a baseline threshold (0.5) will be 0.5 * (0.2 * 50) = 5.0.
+Models make predictions at 50Hz. A shift is predicted if the VAP probability of the *other* speaker is higher than a threshold. Since the probability is cumulated over a 200ms-second window, a baseline threshold (0.5) will be 0.5 * (0.2 * 50) = 5.0.
 
 ```bash
 cd eval
